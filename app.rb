@@ -90,13 +90,13 @@ post '/delete' do
   redirect to('/')
 end
 
-get '/delete_all/?*' do |pass|
-  unless pass.empty?
-    @cnt = BodyWeight.delete_all(pass: pass)
-    flash.now[:warning] = "pass = #{pass} is delete. #{@cnt} documents."
-  end
-  slim :delete_all
-end
+# get '/delete_all/?*' do |pass|
+#   unless pass.empty?
+#     @cnt = BodyWeight.delete_all(pass: pass)
+#     flash.now[:warning] = "pass = #{pass} is delete. #{@cnt} documents."
+#   end
+#   slim :delete_all
+# end
 
 __END__
 @@delete
