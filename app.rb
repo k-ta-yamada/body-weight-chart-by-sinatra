@@ -61,19 +61,19 @@ post '/regist' do
   end
 end
 
-# get '/csv_load' do
-#   BodyWeight.delete_all(pass: 'csv')
-#   csv = CSV.table('./public/csv/body_weight.csv')
-#   csv.each do |row|
-#     b = BodyWeight.new
-#     b.date   = row[:date]
-#     b.time   = row[:time]
-#     b.weight = row[:weight]
-#     b.pass   = row[:pass]
-#     b.save
-#   end
-#   redirect to('/')
-# end
+get '/csv_load' do
+  BodyWeight.delete_all(pass: 'csv')
+  csv = CSV.table('./public/csv/body_weight.csv')
+  csv.each do |row|
+    b = BodyWeight.new
+    b.date   = row[:date]
+    b.time   = row[:time]
+    b.weight = row[:weight]
+    b.pass   = row[:pass]
+    b.save
+  end
+  redirect to('/')
+end
 
 get '/delete/*' do |id|
   @doc = BodyWeight.find(id)
