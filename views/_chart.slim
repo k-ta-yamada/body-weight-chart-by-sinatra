@@ -1,0 +1,11 @@
+- if BodyWeight.empty?
+  strong no data
+- else
+  <!-- for chartkick -->
+  script src="//www.google.com/jsapi"
+  script src="js/chartkick.js"
+  == line_chart [{ name: 'min', data: BodyWeight.min_weights },
+                 { name: 'max', data: BodyWeight.max_weights },
+                 { name: 'avg', data: BodyWeight.avg_weights }],
+                min: BodyWeight.min(:weight) - 0.5,
+                max: BodyWeight.max(:weight) + 0.5

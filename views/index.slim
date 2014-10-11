@@ -1,0 +1,21 @@
+.row
+  == styled_flash
+
+.row
+  .col-sm-4
+    h3 input form
+    hr
+    == slim :_form
+  .col-sm-8
+    h3 chart
+    hr
+    == slim :_chart
+
+.row
+  .col-sm-4
+    h3 summary
+    == slim :_data_summary
+
+  .col-sm-8
+    h3 data list
+    == slim :_data_list

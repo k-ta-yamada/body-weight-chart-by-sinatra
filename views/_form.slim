@@ -1,0 +1,41 @@
+form.form-horizontal method='post' action='/regist'
+  .form-group
+    .col-sm-2
+      label date
+    .col-sm-10
+      input.form-control [type='date'
+                          name='date'
+                          value=Time.now.strftime('%Y-%m-%d')
+                          required='']
+  .form-group
+    .col-sm-2
+      label time
+    .col-sm-10
+      input.form-control [type='time'
+                          name='time'
+                          value=Time.now.strftime('%H:%M')
+                          required='']
+  .form-group
+    .col-sm-2
+      label weight
+    .col-sm-10
+      input.form-control [type='number'
+                          name='weight'
+                          value=(BodyWeight.empty? ? 70 : BodyWeight.desc(:date).first.weight)
+                          step='0.05'
+                          min='70'
+                          max='80'
+                          required=''
+                          autofocus='']
+      span.help-block default is last doc's weight
+  .form-group
+    .col-sm-2
+      label pass
+    .col-sm-10
+      input.form-control [type='text'
+                          name='pass'
+                          required=''
+                          placeholder='key word']
+  .form-group
+    .col-sm-offset-2.col-sm-10
+      button.btn.btn-default.btn-block type='submit' send
