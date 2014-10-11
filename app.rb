@@ -63,7 +63,7 @@ end
 
 get '/csv_load' do
   BodyWeight.delete_all(pass: 'csv')
-  csv = CSV.table('./public/csv/body_weight.csv')
+  csv = CSV.table('./models/body_weight.csv')
   csv.each do |row|
     b = BodyWeight.new
     b.date   = row[:date]
