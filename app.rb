@@ -98,6 +98,10 @@ end
 #   slim :delete_all
 # end
 
+get '/newrelic' do
+  "#{Time.now} / #{BodyWeight.count}"
+end
+
 __END__
 @@delete
 .container
