@@ -5,7 +5,21 @@ script [type="text/javascript"
 link [rel="stylesheet"
       href="css/bootstrap-slider.css"]
 style
-  | .slider.slider-horizontal {width: 80%;}
+  | .slider.slider-horizontal {
+  |   width: 210px;
+  | }
+  | .slider.slider-horizontal .slider-track {
+  |   height: 100%;
+  |   margin-top: -10px;
+  | }
+  | .slider-handle.min-slider-handle {
+  |   width: 50px;
+  |   height: 50px;
+  | }
+  | .slider.slider-horizontal .slider-handle {
+  |   margin-left: -25px;
+  |   margin-top: -15px;
+  | }
 
 form.form-horizontal method='post' action='/regist'
   .form-group
@@ -35,8 +49,7 @@ form.form-horizontal method='post' action='/regist'
                           step='0.05'
                           min='70'
                           max='75'
-                          required=''
-                          autofocus='']
+                          required='']
       span.help-block default is last doc's weight
       | 70&nbsp;&nbsp;
       input.form-control [type='text'
@@ -47,7 +60,7 @@ form.form-horizontal method='post' action='/regist'
                           data-slider-step='0.05'
                           data-slider-value=(BodyWeight.empty? ? 70 : BodyWeight.desc(:date, :time).first.weight)
                           data-slider-tooltip=''
-                          data-slider-handle='square']
+                          data-slider-handle='round']
       | &nbsp;&nbsp;75
   .form-group
     .col-sm-2
