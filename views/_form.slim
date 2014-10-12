@@ -1,3 +1,12 @@
+/! for bootstrap-slider
+/! https://github.com/seiyria/bootstrap-slider
+script [type="text/javascript"
+        src='js/bootstrap-slider.js']
+link [rel="stylesheet"
+      href="css/bootstrap-slider.css"]
+style
+  | .slider.slider-horizontal {width: 80%;}
+
 form.form-horizontal method='post' action='/regist'
   .form-group
     .col-sm-2
@@ -20,14 +29,27 @@ form.form-horizontal method='post' action='/regist'
       label weight
     .col-sm-10
       input.form-control [type='number'
+                          id='weight'
                           name='weight'
-                          value=(BodyWeight.empty? ? 70 : BodyWeight.desc(:date).first.weight)
+                          value=(BodyWeight.empty? ? 70 : BodyWeight.desc(:date, :time).first.weight)
                           step='0.05'
                           min='70'
-                          max='80'
+                          max='75'
                           required=''
                           autofocus='']
       span.help-block default is last doc's weight
+      | 70&nbsp;&nbsp;
+      input.form-control [type='text'
+                          id='weight-slider'
+                          name='weight-slider'
+                          data-slider-id='weightSlider'
+                          data-slider-min='70'
+                          data-slider-max='75'
+                          data-slider-step='0.05'
+                          data-slider-value=(BodyWeight.empty? ? 70 : BodyWeight.desc(:date, :time).first.weight)
+                          data-slider-tooltip=''
+                          data-slider-handle='square']
+      | &nbsp;&nbsp;75
   .form-group
     .col-sm-2
       label pass
@@ -39,3 +61,17 @@ form.form-horizontal method='post' action='/regist'
   .form-group
     .col-sm-offset-2.col-sm-10
       button.btn.btn-default.btn-block type='submit' send
+
+
+/! for bootstrap-slider
+/! https://github.com/seiyria/bootstrap-slider
+script type='text/javascript'
+  | $(document).ready(function() {
+  |   mySlider = $('#weight-slider').slider();
+  |   mySlider.on('slide', function() {
+  |     $('#weight').val(mySlider.slider('getValue'));
+  |   });
+  |   $('#weight').change(function() {
+  |     mySlider.slider('setValue', parseFloat($('#weight').val()));
+  |   });
+  | });

@@ -1,12 +1,13 @@
 require 'sinatra'
-require 'sinatra/flash'
 require 'slim'
 require 'chartkick'
 require 'csv'
+
 require 'mongoid'
 # Mongoid.load!('./config/mongoid.yml', :development)
 Mongoid.load!('./config/mongoid.yml')
 require './models/body_weight'
+
 if development?
   require 'sinatra/reloader'
   require 'pry'
@@ -15,8 +16,6 @@ end
 
 configure :production do
   require 'newrelic_rpm'
-  # for sinatra/flash
-  enable :sessions
 end
 
 helpers do
@@ -47,7 +46,7 @@ get '/' do
 end
 
 get '/regist' do
-  slim :_form
+  slim :regist
 end
 
 PASS_KEY = ENV['PASS_KEY'] || 'dev'
@@ -90,60 +89,6 @@ post '/delete' do
   redirect to('/')
 end
 
-# get '/delete_all/?*' do |pass|
-#   unless pass.empty?
-#     @cnt = BodyWeight.delete_all(pass: pass)
-#     flash.now[:warning] = "pass = #{pass} is delete. #{@cnt} documents."
-#   end
-#   slim :delete_all
-# end
-
 get '/newrelic' do
   "#{Time.now} / #{BodyWeight.count}"
 end
-
-__END__
-@@delete
-.container
-  h3 deleted this doc
-  table.table.table-hover
-    tr
-      th id
-      td = @doc.id
-    tr
-      th date
-      td = @doc.date
-    tr
-      th time
-      td = @doc.time
-    tr
-      th weight
-      td = @doc.weight
-    /tr
-      th pass
-      td = @doc.pass
-  h3 Did you make sure that you want to delete the document?
-  form method='post' action='/delete'
-    input [type='hidden'
-           name='id'
-           value=@doc.id]
-    input [type='text'
-           name='pass'
-           required=''
-           placeholder='key word']
-    | &nbsp;&nbsp;
-    button.btn.btn-danger type='submit' was confirmed.
-
-@@delete_all
-.col-sm-8
-  table.table.table-hover
-    tr
-      th pass
-      th cnt
-      th
-    - BodyWeight.distinct(:pass).sort.each do |k|
-      tr
-        td = k
-        td = BodyWeight.where(pass: k).count
-        td: a.btn.btn-block.btn-danger href='/delete_all/#{k}' delete
-  == styled_flash
