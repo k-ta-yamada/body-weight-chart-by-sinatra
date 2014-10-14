@@ -5,20 +5,13 @@ script [type="text/javascript"
 link [rel="stylesheet"
       href="css/bootstrap-slider.css"]
 style
-  | .slider.slider-horizontal {
-  |   width: 80%;
-  | }
-  | .slider.slider-horizontal .slider-track {
-  |   height: 100%;
-  |   margin-top: -10px;
-  | }
   | .slider-handle.min-slider-handle {
-  |   width: 50px;
+  |   width:  50px;
   |   height: 50px;
   | }
-  | .slider.slider-horizontal .slider-handle {
-  |   margin-left: -25px;
-  |   margin-top: -15px;
+  | .slider.slider-vertical .slider-handle {
+  |   margin-left: -20px;
+  |   margin-top: -20px;
   | }
 
 form.form-horizontal method='post' action='/regist'
@@ -41,7 +34,7 @@ form.form-horizontal method='post' action='/regist'
   .form-group
     .col-sm-2
       label weight
-    .col-sm-10
+    .col-sm-7
       input.form-control [type='number'
                           id='weight'
                           name='weight'
@@ -51,10 +44,13 @@ form.form-horizontal method='post' action='/regist'
                           max='75'
                           required='']
       span.help-block default is last doc's weight
-    .col-sm-offset-4.col-sm-8
-      | 70&nbsp;&nbsp;
+    /.col-sm-offset-6.col-sm-6
+    .col-sm-offset-1.col-sm-1
+      /| 70&nbsp;&nbsp;
       input.form-control [type='text'
                           id='weight-slider'
+                          data-slider-orientation='vertical'
+                          data-slider-reversed='true'
                           data-slider-id='weightSlider'
                           data-slider-min='70'
                           data-slider-max='75'
@@ -62,7 +58,7 @@ form.form-horizontal method='post' action='/regist'
                           data-slider-value=(BodyWeight.empty? ? 70 : BodyWeight.desc(:date, :time).first.weight)
                           data-slider-tooltip=''
                           data-slider-handle='round']
-      | &nbsp;&nbsp;75
+      /| &nbsp;&nbsp;75
   .form-group
     .col-sm-2
       label pass
@@ -74,7 +70,6 @@ form.form-horizontal method='post' action='/regist'
   .form-group
     .col-sm-offset-2.col-sm-10
       button.btn.btn-default.btn-block type='submit' send
-
 
 /! for bootstrap-slider
 /! https://github.com/seiyria/bootstrap-slider
