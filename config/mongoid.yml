@@ -1,7 +1,7 @@
 development:
   sessions:
     default:
-      database: body-weight
+      database: body-weights-dev
       hosts:
         - localhost:27017
 production:

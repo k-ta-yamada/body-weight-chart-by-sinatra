@@ -16,36 +16,35 @@ style
 
 form.form-horizontal method='post' action='/regist'
   .form-group
-    .col-sm-2
+    .col-sm-1
       label date
-    .col-sm-10
-      input.form-control [type='date'
-                          name='date'
-                          value=Time.now.strftime('%Y-%m-%d')
-                          required='']
-  .form-group
-    .col-sm-2
+    .col-sm-5
+      input.form-control.input-sm [type='date'
+                                   name='date'
+                                   value=Time.now.strftime('%Y-%m-%d')
+                                   required='']
+    .col-sm-1
       label time
-    .col-sm-10
-      input.form-control [type='time'
-                          name='time'
-                          value=Time.now.strftime('%H:%M')
-                          required='']
+    .col-sm-5
+      input.form-control.input-sm [type='time'
+                                   name='time'
+                                   value=Time.now.strftime('%H:%M')
+                                   required='']
   .form-group
     .col-sm-2
       label weight
-    .col-sm-7
-      input.form-control [type='number'
-                          id='weight'
-                          name='weight'
-                          value=(BodyWeight.empty? ? 70 : BodyWeight.desc(:date, :time).first.weight)
-                          step='0.05'
-                          min='70'
-                          max='75'
-                          required='']
+    .col-sm-5
+      input.form-control.input-lg [type='number'
+                                   id='weight'
+                                   name='weight'
+                                   value=(BodyWeight.empty? ? 70 : BodyWeight.desc(:date, :time).first.weight)
+                                   step='0.05'
+                                   min='70'
+                                   max='75'
+                                   required='']
       span.help-block default is last doc's weight
     /.col-sm-offset-6.col-sm-6
-    .col-sm-offset-1.col-sm-1
+    .col-sm-offset-0.col-sm-1
       /| 70&nbsp;&nbsp;
       input.form-control [type='text'
                           id='weight-slider'
@@ -62,14 +61,14 @@ form.form-horizontal method='post' action='/regist'
   .form-group
     .col-sm-2
       label pass
-    .col-sm-10
-      input.form-control [type='text'
-                          name='pass'
-                          required=''
-                          placeholder='key word']
+    .col-sm-5
+      input.form-control.input-lg [type='text'
+                                   name='pass'
+                                   required=''
+                                   placeholder='key word']
   .form-group
     .col-sm-offset-2.col-sm-10
-      button.btn.btn-default.btn-block type='submit' send
+      button.btn.btn-default.btn-block.btn-lg type='submit' send
 
 /! for bootstrap-slider
 /! https://github.com/seiyria/bootstrap-slider
