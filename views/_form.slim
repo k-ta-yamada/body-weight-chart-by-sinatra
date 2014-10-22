@@ -1,7 +1,7 @@
 /! for bootstrap-slider
 /! https://github.com/seiyria/bootstrap-slider
 script [type="text/javascript"
-        src='js/bootstrap-slider.js']
+        src="js/bootstrap-slider.js"]
 link [rel="stylesheet"
       href="css/bootstrap-slider.css"]
 style
@@ -14,65 +14,57 @@ style
   |   margin-top: -20px;
   | }
 
-form.form-horizontal method='post' action='/regist'
-  .form-group
-    .col-sm-1
-      label date
-    .col-sm-5
-      input.form-control.input-sm [type='date'
-                                   name='date'
+form.form-horizontal method="post" action="/regist"
+  fieldset
+    legend date time
+    .col-sm-7
+      input.form-control.input-sm [type="date"
+                                   name="date"
                                    value=Time.now.strftime('%Y-%m-%d')
-                                   required='']
-    .col-sm-1
-      label time
+                                   required=""]
     .col-sm-5
-      input.form-control.input-sm [type='time'
-                                   name='time'
+      input.form-control.input-sm [type="time"
+                                   name="time"
                                    value=Time.now.strftime('%H:%M')
-                                   required='']
-  .form-group
-    .col-sm-2
-      label weight
-    .col-sm-5
-      input.form-control.input-lg [type='number'
-                                   id='weight'
-                                   name='weight'
+                                   required=""]
+  fieldset
+    legend weight
+    .col-sm-10
+      input.form-control.input-lg [type="number"
+                                   id="weight"
+                                   name="weight"
                                    value=(BodyWeight.empty? ? 70 : BodyWeight.desc(:date, :time).first.weight)
-                                   step='0.05'
-                                   min='70'
-                                   max='75'
-                                   required='']
+                                   step="0.05"
+                                   min="70"
+                                   max="75"
+                                   required=""]
       span.help-block default is last doc's weight
-    /.col-sm-offset-6.col-sm-6
-    .col-sm-offset-0.col-sm-1
-      /| 70&nbsp;&nbsp;
-      input.form-control [type='text'
-                          id='weight-slider'
-                          data-slider-orientation='vertical'
-                          data-slider-reversed='true'
-                          data-slider-id='weightSlider'
-                          data-slider-min='70'
-                          data-slider-max='75'
-                          data-slider-step='0.05'
+    .col-sm-1
+      input.form-control [type="text"
+                          id="weight-slider"
+                          data-slider-orientation="vertical"
+                          data-slider-reversed="true"
+                          data-slider-id="weightSlider"
+                          data-slider-min="70"
+                          data-slider-max="75"
+                          data-slider-step="0.05"
                           data-slider-value=(BodyWeight.empty? ? 70 : BodyWeight.desc(:date, :time).first.weight)
-                          data-slider-tooltip=''
-                          data-slider-handle='round']
-      /| &nbsp;&nbsp;75
-  .form-group
-    .col-sm-2
-      label pass
-    .col-sm-5
-      input.form-control.input-lg [type='text'
-                                   name='pass'
-                                   required=''
-                                   placeholder='key word']
-  .form-group
-    .col-sm-offset-2.col-sm-10
-      button.btn.btn-default.btn-block.btn-lg type='submit' send
+                          data-slider-tooltip=""
+                          data-slider-handle="round"]
+  fieldset
+    legend
+    .col-sm-12
+      input.form-control.input-lg [type="text"
+                                   name="pass"
+                                   required=""
+                                   placeholder="key word"]
+    .col-sm-12
+      button.btn.btn-default.btn-block.btn-lg.btn-default type="submit" submit
+
 
 /! for bootstrap-slider
 /! https://github.com/seiyria/bootstrap-slider
-script type='text/javascript'
+script type="text/javascript"
   | $(document).ready(function() {
   |   mySlider = $('#weight-slider').slider();
   |   mySlider.on('slide', function() {

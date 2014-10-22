@@ -1,12 +1,14 @@
 table.table.table-hover
-  tr
-    th #
-    th date
-    th time
-    th weight
-    th delete
-    th id
-    /th pass
+  thead
+    tr
+      th #
+      th date
+      th time
+      th weight
+      th delete
+      th id
+      th pass
+  tbody
   - BodyWeight.desc(:date, :time).limit().each.with_index(1) do |doc, i|
     tr class = (doc.weight > 72.5 ? 'danger' : nil)
       td = i
@@ -15,4 +17,4 @@ table.table.table-hover
       td = "#{sprintf('%03.2f', doc.weight)} kg"
       td: a.btn.btn-danger.btn-xs href='/delete/#{doc.id}' delete
       td = doc.id
-      /td = doc.pass
+      td = doc.pass
