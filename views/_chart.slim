@@ -7,9 +7,10 @@
   script [type="text/javascript"
           src="js/chartkick.js"]
 
-  == line_chart [{ name: 'min', data: BodyWeight.min_weights },
-                 { name: 'max', data: BodyWeight.max_weights },
-                 { name: 'avg', data: BodyWeight.avg_weights }],
+  p.text-danger data of chart is last 7 days documents.
+  == line_chart [{ name: "min", data: BodyWeight.min_weights },
+                 { name: "max", data: BodyWeight.max_weights },
+                 { name: "avg", data: BodyWeight.avg_weights }],
                 min: BodyWeight.min(:weight) - 0.5,
                 max: BodyWeight.max(:weight) + 0.5,
-                height: '400px'
+                height: "450px"

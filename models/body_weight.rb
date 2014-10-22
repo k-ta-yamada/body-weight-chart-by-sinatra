@@ -9,7 +9,7 @@ class BodyWeight
 
   class << self
     def distinct_date
-      distinct(:date)
+      distinct(:date).reverse[0..6]
     end
 
     def min_weights
