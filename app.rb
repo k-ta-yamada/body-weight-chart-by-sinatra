@@ -64,9 +64,9 @@ namespace '/auth' do
     auth = env['omniauth.auth']
 
     # ユーザーがいれば検索結果を、いなければcreateする
-    # user = User.find_by(provider: auth.provider, uid: auth.uid)
-    user = User.find_by(provider: auth.provider, uid: auth.uid) ||
-             User.create_with_omniauth(auth)
+    user = User.find_by(provider: auth.provider, uid: auth.uid)
+    # user = User.find_by(provider: auth.provider, uid: auth.uid) ||
+    #          User.create_with_omniauth(auth)
 
     # セッションにログイン有無の判定に必要な値を設定
     session[:provider] = user.provider
@@ -95,14 +95,14 @@ namespace '/protected' do
     slim :regist
   end
 
-  PASS_KEY = ENV['PASS_KEY'] || 'dev'
+  # PASS_KEY = ENV['PASS_KEY'] || 'dev'
   post '/regist' do
-    redirect to('/') unless params[:pass] == PASS_KEY
+    # redirect to('/') unless params[:pass] == PASS_KEY
 
     if BodyWeight.create(params)
-      redirect to('/')
+      redirect to('/protected')
     else
-      redirect to('/')
+      redirect to('/protected')
     end
   end
 
@@ -117,7 +117,7 @@ namespace '/protected' do
       b.pass   = row[:pass]
       b.save
     end
-    redirect to('/')
+    redirect to('/protected')
   end
 
   get '/delete/*' do |id|
@@ -127,12 +127,12 @@ namespace '/protected' do
   end
 
   post '/delete' do
-    redirect to("/delete/#{params[:id]}") unless params[:pass] == PASS_KEY
+    # redirect to("/delete/#{params[:id]}") unless params[:pass] == PASS_KEY
     id = params[:id]
     doc = BodyWeight.find(id)
     doc.destroy
 
-    redirect to('/')
+    redirect to('/protected')
   end
 end
 
