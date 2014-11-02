@@ -3,13 +3,14 @@ source 'https://rubygems.org'
 ruby '2.1.3'
 
 gem 'sinatra'
+gem 'sinatra-contrib'
 gem 'chartkick'
 gem 'slim'
+gem 'omniauth-google-oauth2'
 gem 'newrelic_rpm'
 gem 'mongoid'
 
 group :development do
-  gem 'sinatra-contrib'
   gem 'pry'
   gem 'pry-doc'
   gem 'byebug'
