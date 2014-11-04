@@ -1,4 +1,4 @@
-- if BodyWeight.empty?
+- if @user.body_weights.empty?
   strong no data
 - else
   /! for chartkick
@@ -7,10 +7,9 @@
   script [type="text/javascript"
           src="/js/chartkick.js"]
 
-  p.text-danger data of chart is last 7 days documents.
-  == line_chart [{ name: "min", data: BodyWeight.min_weights },
-                 { name: "max", data: BodyWeight.max_weights },
-                 { name: "avg", data: BodyWeight.avg_weights }],
-                min: BodyWeight.min(:weight) - 0.5,
-                max: BodyWeight.max(:weight) + 0.5,
+  == line_chart [@user.body_weights.aggregate_of_day(:min),
+                 @user.body_weights.aggregate_of_day(:max),
+                 @user.body_weights.aggregate_of_day(:avg)],
+                min: @user.body_weights.min(:weight) - 0.5,
+                max: @user.body_weights.max(:weight) + 0.5,
                 height: "450px"

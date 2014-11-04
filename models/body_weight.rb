@@ -6,34 +6,12 @@ class BodyWeight
   field :time,   type: Time,  default: -> { Time.now }
   field :weight, type: Float, default: 0
   field :pass,   type: String
+  belongs_to :user
 
-  class << self
-    def distinct_date
-      distinct(:date).reverse[0..6]
-    end
-
-    def min_weights
-      result = {}
-      distinct_date.each do |date|
-        result[date] = where(date: date).min(:weight)
-      end
-      result
-    end
-
-    def max_weights
-      result = {}
-      distinct_date.each do |date|
-        result[date] = where(date: date).max(:weight)
-      end
-      result
-    end
-
-    def avg_weights
-      result = {}
-      distinct_date.each do |date|
-        result[date] = where(date: date).avg(:weight)
-      end
-      result
-    end
+  def self.aggregate_of_day(name = nil)
+    return { name: 'xxx', data: {} } unless %i(min max avg).include?(name)
+    result =
+      distinct(:date).map { |d| [d, where(date: d).send(name, :weight)] }
+    { name: "#{name} of day", data: Hash[result] }
   end
 end

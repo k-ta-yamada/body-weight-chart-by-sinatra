@@ -4,7 +4,6 @@ require 'sinatra/config_file'
 require 'slim'
 require 'omniauth-google-oauth2'
 require 'chartkick'
-require 'csv'
 require './models/load'
 if development?
   require 'sinatra/reloader'
@@ -30,17 +29,28 @@ configure :production do
 end
 
 # ######################################################################
-# before filter /protected
+# helpers
 # ######################################################################
-before '/protected' do
-  provider = session[:provider]
-  uid      = session[:uid]
-  if provider.nil? || uid.nil?
+helpers do
+  def user_login?
+    session[:provider] && session[:uid]
+  end
+
+  def current_user
+    User.find_by(provider: session[:provider], uid: session[:uid])
+  end
+end
+
+# ######################################################################
+# before filter /home
+# ######################################################################
+before '/home/?*' do
+  if user_login?
+    @user = current_user
+  else
     # 認証後のリダイレクト先を格納しておく
     session[:request_path] = request.path
     redirect to('/auth/google_oauth2')
-  else
-    @user = User.find_by(provider: provider, uid: uid)
   end
 end
 
@@ -48,7 +58,8 @@ end
 # no auth area
 # ######################################################################
 get '/' do
-  slim 'h1: a href="/protected" login with Google', layout: false
+  redirect to('/home') if user_login?
+  slim :index
 end
 
 get '/logout' do
@@ -64,9 +75,9 @@ namespace '/auth' do
     auth = env['omniauth.auth']
 
     # ユーザーがいれば検索結果を、いなければcreateする
-    user = User.find_by(provider: auth.provider, uid: auth.uid)
-    # user = User.find_by(provider: auth.provider, uid: auth.uid) ||
-    #          User.create_with_omniauth(auth)
+    # user = User.find_by(provider: auth.provider, uid: auth.uid)
+    user = User.find_by(provider: auth.provider, uid: auth.uid) ||
+             User.create_with_omniauth(auth)
 
     # セッションにログイン有無の判定に必要な値を設定
     session[:provider] = user.provider
@@ -76,9 +87,11 @@ namespace '/auth' do
   end
 
   get '/failure' do
+    session.clear
     str = []
-    str << 'h1.tet-danger auth failure'
-    str << "h2 message [#{params['message']}]"
+    str << 'h1.text-danger auth failure'
+    str << "p message [#{params['message']}]"
+    str << "h2: a href='/' back to index"
     slim str.join("\n")
   end
 end
@@ -86,53 +99,32 @@ end
 # ######################################################################
 # Authentication Area
 # ######################################################################
-namespace '/protected' do
+namespace '/home' do
   get '/?' do
-    slim :index
+    slim :home
   end
 
-  get '/regist' do
-    slim :regist
-  end
-
-  # PASS_KEY = ENV['PASS_KEY'] || 'dev'
   post '/regist' do
-    # redirect to('/') unless params[:pass] == PASS_KEY
-
-    if BodyWeight.create(params)
-      redirect to('/protected')
+    if @user.body_weights.create(params)
+      redirect to('/home')
     else
-      redirect to('/protected')
+      # TODO: 登録失敗時の対応をどうにかする
+      redirect to('/home')
     end
   end
 
-  get '/csv_load' do
-    BodyWeight.delete_all(pass: 'csv')
-    csv = CSV.table('./models/body_weight.csv')
-    csv.each do |row|
-      b = BodyWeight.new
-      b.date   = row[:date]
-      b.time   = row[:time]
-      b.weight = row[:weight]
-      b.pass   = row[:pass]
-      b.save
-    end
-    redirect to('/protected')
-  end
+  get '/delete/:id' do |id|
+    @doc = @user.body_weights.find(id)
+    redirect to('/home') if @doc.nil?
 
-  get '/delete/*' do |id|
-    @doc = BodyWeight.find(id)
-    # @doc.destroy
     slim :delete
   end
 
-  post '/delete' do
-    # redirect to("/delete/#{params[:id]}") unless params[:pass] == PASS_KEY
-    id = params[:id]
-    doc = BodyWeight.find(id)
-    doc.destroy
+  post '/delete/:id' do |id|
+    doc = @user.body_weights.find(id)
+    doc.destroy unless doc.nil?
 
-    redirect to('/protected')
+    redirect to('/home')
   end
 end
 

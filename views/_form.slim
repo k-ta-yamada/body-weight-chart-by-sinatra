@@ -14,7 +14,7 @@ style
   |   margin-top: -20px;
   | }
 
-form.form-horizontal method="post" action="/protected/regist"
+form.form-horizontal method="post" action="/home/regist"
   fieldset
     / legend date time
     .form-group
@@ -42,7 +42,7 @@ form.form-horizontal method="post" action="/protected/regist"
         input.form-control.input-lg [type="number"
                                      id="weight"
                                      name="weight"
-                                     value=(BodyWeight.empty? ? 70 : BodyWeight.desc(:date, :time).first.weight)
+                                     value=(@user.body_weights.empty? ? 70 : @user.body_weights.desc(:date, :time).first.weight)
                                      step="0.05"
                                      min="70"
                                      max="75"
@@ -57,7 +57,7 @@ form.form-horizontal method="post" action="/protected/regist"
                             data-slider-min="70"
                             data-slider-max="75"
                             data-slider-step="0.05"
-                            data-slider-value=(BodyWeight.empty? ? 70 : BodyWeight.desc(:date, :time).first.weight)
+                            data-slider-value=(@user.body_weights.empty? ? 70 : @user.body_weights.desc(:date, :time).first.weight)
                             data-slider-tooltip=""
                             data-slider-handle="round"]
   fieldset

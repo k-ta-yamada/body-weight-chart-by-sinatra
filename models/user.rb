@@ -7,6 +7,7 @@ class User
   field :first_name, type: String
   field :last_name,  type: String
   field :email,      type: String
+  has_many :body_weights
 
   def self.create_with_omniauth(auth)
     create do |user|

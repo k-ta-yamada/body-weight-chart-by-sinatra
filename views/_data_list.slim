@@ -11,12 +11,12 @@ p.text-danger order by desc(:date, :time)
         / th id
         / th pass
     tbody
-    - BodyWeight.desc(:date, :time).limit().each.with_index(1) do |doc, i|
+    - @user.body_weights.desc(:date, :time).limit().each.with_index(1) do |doc, i|
       tr.text-nowrap class = (doc.weight > 72.5 ? 'danger' : nil)
         td = sprintf('%03d', i)
         td = doc.date
         td = doc.time.strftime('%H:%M')
         td = "#{sprintf('%03.2f', doc.weight)} kg"
-        td: a.btn.btn-danger.btn-xs href='/protected/delete/#{doc.id}' delete
+        td: a.btn.btn-danger.btn-xs href="/home/delete/#{doc.id}" delete
         / td = doc.id
         / td = doc.pass

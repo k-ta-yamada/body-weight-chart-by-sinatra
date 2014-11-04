@@ -1,16 +1,16 @@
 table.table.table-hover
   tr
     th min weight
-    td #{BodyWeight.min(:weight)} kg
+    td #{@user.body_weights.min(:weight)} kg
   tr
     th max weight
-    td #{BodyWeight.max(:weight)} kg
+    td #{@user.body_weights.max(:weight)} kg
   tr
     th documents
-    td #{BodyWeight.count} documents
+    td #{@user.body_weights.count} documents
   tr
     th start date
-    td = BodyWeight.empty? ? nil : BodyWeight.min(:date).strftime('%Y-%m-%d')
+    td = @user.body_weights.empty? ? nil : @user.body_weights.min(:date).strftime('%Y-%m-%d')
   tr
     th last date
-    td = BodyWeight.empty? ? nil : BodyWeight.max(:date).strftime('%Y-%m-%d')
+    td = @user.body_weights.empty? ? nil : @user.body_weights.max(:date).strftime('%Y-%m-%d')
