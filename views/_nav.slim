@@ -1,7 +1,23 @@
-ul.nav.nav-tabs
-  li
-    a href='/home'
-      span.glyphicon.glyphicon-home
-      | &nbsp;
-        home
-  li: a href='/logout' logout
+nav.navbar.navbar-default.navbar-fixed-bottom
+  .container-fluid
+
+    .navbar-header
+      button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#nav-menu-1"
+        span class="sr-only" Toggle navigation
+        span class="icon-bar"
+        span class="icon-bar"
+        span class="icon-bar"
+      a.navbar-brand href="/" my-body-weight
+
+    #nav-menu-1.collapse.navbar-collapse
+      - if request.path == '/home'
+        ul.nav.navbar-nav
+          / li: a href="#input-form" input
+          li: a href="#chart" chart
+          / li: a href="#summary" summary
+          li: a href="#data-list" list
+          li: a href="/logout" logout
+
+      p.navbar-text.navbar-right
+        | welcom,&nbsp;
+        a.navbar-link href="#" #{@user.first_name} #{@user.last_name}

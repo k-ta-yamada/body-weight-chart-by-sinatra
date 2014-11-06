@@ -1,21 +1,18 @@
 .row
-  .col-md-12
-    h4 welcome, #{@user.first_name} #{@user.last_name}.
-.row
   .col-md-4
-    h3 input form
+    h3#input-form input form
     hr
     == slim :_form
   .col-md-8
-    h3 chart
+    h3#chart chart
     hr
     == slim :_chart
 
 .row
   .col-md-4
-    h3 summary
+    h3#summary summary
     == slim :_data_summary
 
   .col-md-8
-    h3 data list
+    h3#data-list data list
     == slim :_data_list

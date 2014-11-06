@@ -39,6 +39,23 @@ helpers do
   def current_user
     User.find_by(provider: session[:provider], uid: session[:uid])
   end
+
+  def form_action
+    @action ||= '/home/create'
+  end
+
+  def current_date
+    @date ||= Time.now.strftime('%Y-%m-%d')
+  end
+
+  def current_time
+    @time ||= Time.now.strftime('%H:%M')
+  end
+
+  def recent_weight
+    bw = @user.body_weights
+    @bw ||= bw.empty? ? nil : bw.desc(:date, :time).first.weight
+  end
 end
 
 # ######################################################################
@@ -57,14 +74,16 @@ end
 # ######################################################################
 # no auth area
 # ######################################################################
-get '/' do
-  redirect to('/home') if user_login?
-  slim :index
-end
+namespace '/' do
+  get '' do
+    redirect to('/home') if user_login?
+    slim :index
+  end
 
-get '/logout' do
-  session.clear
-  redirect to('/')
+  get 'logout' do
+    session.clear
+    redirect to('/')
+  end
 end
 
 # ######################################################################
@@ -73,12 +92,9 @@ end
 namespace '/auth' do
   get '/:provider/callback' do
     auth = env['omniauth.auth']
-
     # ユーザーがいれば検索結果を、いなければcreateする
-    # user = User.find_by(provider: auth.provider, uid: auth.uid)
     user = User.find_by(provider: auth.provider, uid: auth.uid) ||
              User.create_with_omniauth(auth)
-
     # セッションにログイン有無の判定に必要な値を設定
     session[:provider] = user.provider
     session[:uid]      = user.uid
@@ -104,7 +120,7 @@ namespace '/home' do
     slim :home
   end
 
-  post '/regist' do
+  post '/create' do
     if @user.body_weights.create(params)
       redirect to('/home')
     else
@@ -113,17 +129,37 @@ namespace '/home' do
     end
   end
 
+  get '/edit/:id' do |id|
+    bw = @user.body_weights.find(id)
+    @date   = bw.date.strftime('%Y-%m-%d')
+    @time   = bw.time.strftime('%H:%M')
+    @bw     = bw.weight
+    @action = "/home/edit/#{id}"
+    slim :edit
+  end
+
+  post '/edit/:id' do |id|
+    @doc = @user.body_weights.find(id)
+    redirect to('/home') if @doc.nil?
+    if @doc.update(date:   params['date'],
+                   time:   params['time'],
+                   weight: params['weight'])
+      redirect to('/home')
+    else
+      # TODO: 更新失敗時の対応をなんとかする
+      redirect to("/edit/#{id}")
+    end
+  end
+
   get '/delete/:id' do |id|
     @doc = @user.body_weights.find(id)
     redirect to('/home') if @doc.nil?
-
     slim :delete
   end
 
   post '/delete/:id' do |id|
     doc = @user.body_weights.find(id)
     doc.destroy unless doc.nil?
-
     redirect to('/home')
   end
 end

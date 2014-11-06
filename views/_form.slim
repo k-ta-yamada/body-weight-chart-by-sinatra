@@ -14,7 +14,7 @@ style
   |   margin-top: -20px;
   | }
 
-form.form-horizontal method="post" action="/home/regist"
+form.form-horizontal method="post" action=form_action
   fieldset
     / legend date time
     .form-group
@@ -23,7 +23,7 @@ form.form-horizontal method="post" action="/home/regist"
       .col-sm-10
         input.form-control.input-lg [type="date"
                                      name="date"
-                                     value=Time.now.strftime('%Y-%m-%d')
+                                     value=current_date
                                      required=""]
     .form-group
       .col-sm-2
@@ -31,7 +31,7 @@ form.form-horizontal method="post" action="/home/regist"
       .col-sm-10
         input.form-control.input-lg [type="time"
                                      name="time"
-                                     value=Time.now.strftime('%H:%M')
+                                     value=current_time
                                      required=""]
   fieldset
     legend weight
@@ -42,7 +42,7 @@ form.form-horizontal method="post" action="/home/regist"
         input.form-control.input-lg [type="number"
                                      id="weight"
                                      name="weight"
-                                     value=(@user.body_weights.empty? ? 70 : @user.body_weights.desc(:date, :time).first.weight)
+                                     value=recent_weight
                                      step="0.05"
                                      min="70"
                                      max="75"
@@ -57,19 +57,11 @@ form.form-horizontal method="post" action="/home/regist"
                             data-slider-min="70"
                             data-slider-max="75"
                             data-slider-step="0.05"
-                            data-slider-value=(@user.body_weights.empty? ? 70 : @user.body_weights.desc(:date, :time).first.weight)
+                            data-slider-value=recent_weight
                             data-slider-tooltip=""
                             data-slider-handle="round"]
   fieldset
     legend
-    / .form-group
-      .col-sm-2
-        / label pass
-      .col-sm-10
-        input.form-control.input-lg [type="text"
-                                     name="pass"
-                                     required=""
-                                     placeholder="key word"]
     .form-group
       .col-sm-offset-2.col-sm-10
         button.btn.btn-warning.btn-block.btn-lg type="submit" submit
