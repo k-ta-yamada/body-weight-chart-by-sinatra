@@ -11,5 +11,4 @@
                  @user.body_weights.aggregate_of_day(:max),
                  @user.body_weights.aggregate_of_day(:avg)],
                 min: @user.body_weights.min(:weight) - 0.5,
-                max: @user.body_weights.max(:weight) + 0.5,
-                height: "450px"
+                max: @user.body_weights.max(:weight) + 0.5

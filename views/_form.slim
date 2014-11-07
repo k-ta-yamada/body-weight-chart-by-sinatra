@@ -1,19 +1,3 @@
-/! for bootstrap-slider
-/! https://github.com/seiyria/bootstrap-slider
-script [type="text/javascript"
-        src="/js/bootstrap-slider.js"]
-link [rel="stylesheet"
-      href="/css/bootstrap-slider.css"]
-style
-  | .slider-handle.min-slider-handle {
-  |   width:  50px;
-  |   height: 50px;
-  | }
-  | .slider.slider-vertical .slider-handle {
-  |   margin-left: -20px;
-  |   margin-top: -20px;
-  | }
-
 form.form-horizontal method="post" action=form_action
   fieldset
     / legend date time
@@ -38,44 +22,17 @@ form.form-horizontal method="post" action=form_action
     .form-group
       .col-sm-2
         / label weight
-      .col-sm-8
+      .col-sm-10
         input.form-control.input-lg [type="number"
                                      id="weight"
                                      name="weight"
                                      value=recent_weight
                                      step="0.05"
-                                     min="70"
-                                     max="75"
+                                     min="0"
                                      required=""]
         span.help-block default is last doc's weight
-      .col-sm-2.text-center
-        input.form-control [type="text"
-                            id="weight-slider"
-                            data-slider-orientation="vertical"
-                            data-slider-reversed="true"
-                            data-slider-id="weightSlider"
-                            data-slider-min="70"
-                            data-slider-max="75"
-                            data-slider-step="0.05"
-                            data-slider-value=recent_weight
-                            data-slider-tooltip=""
-                            data-slider-handle="round"]
   fieldset
     legend
     .form-group
       .col-sm-offset-2.col-sm-10
         button.btn.btn-warning.btn-block.btn-lg type="submit" submit
-
-
-/! for bootstrap-slider
-/! https://github.com/seiyria/bootstrap-slider
-script type="text/javascript"
-  | $(document).ready(function() {
-  |   mySlider = $('#weight-slider').slider();
-  |   mySlider.on('slide', function() {
-  |     $('#weight').val(mySlider.slider('getValue'));
-  |   });
-  |   $('#weight').change(function() {
-  |     mySlider.slider('setValue', parseFloat($('#weight').val()));
-  |   });
-  | });
