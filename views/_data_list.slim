@@ -2,20 +2,19 @@
   table.table.table-hover
     thead
       tr
-        th #
         th date
         th time
         th weight
         th
         th
-        / th
     tbody
-    - @user.body_weights.desc(:date, :time).limit().each.with_index(1) do |doc, i|
+    - body_weights_paginate.each.with_index(1) do |doc, i|
       tr.text-nowrap class = (doc.weight > 72.5 ? 'danger' : nil)
-        td = sprintf('%03d', i)
         td = doc.date
         td = doc.time.strftime('%H:%M')
         td = "#{sprintf('%03.2f', doc.weight)} kg"
         td: a.btn.btn-block.btn-warning.btn-xs href="/home/edit/#{doc.id}" edit
         td: a.btn.btn-block.btn-danger.btn-xs href="/home/delete/#{doc.id}" delete
-        / td = doc.id
+
+  .text-center
+     == will_paginate(body_weights_paginate, renderer: BootstrapPagination::Sinatra)

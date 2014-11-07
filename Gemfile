@@ -9,6 +9,8 @@ gem 'slim'
 gem 'omniauth-google-oauth2'
 gem 'newrelic_rpm'
 gem 'mongoid'
+gem 'will_paginate_mongoid'
+gem 'will_paginate-bootstrap'
 
 group :development do
   gem 'pry'

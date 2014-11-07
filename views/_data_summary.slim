@@ -1,16 +1,18 @@
 table.table.table-hover
-  tr
-    th min weight
-    td #{@user.body_weights.min(:weight)} kg
-  tr
-    th max weight
-    td #{@user.body_weights.max(:weight)} kg
-  tr
-    th documents
-    td #{@user.body_weights.count} documents
-  tr
-    th start date
-    td = @user.body_weights.empty? ? nil : @user.body_weights.min(:date).strftime('%Y-%m-%d')
-  tr
-    th last date
-    td = @user.body_weights.empty? ? nil : @user.body_weights.max(:date).strftime('%Y-%m-%d')
+  thead
+  tbody
+    tr
+      th min weight
+      td #{@user.body_weights.min(:weight)} kg
+    tr
+      th max weight
+      td #{@user.body_weights.max(:weight)} kg
+    tr
+      th documents
+      td #{@user.body_weights.count} documents
+    tr
+      th start date
+      td = @user.body_weights.empty? ? nil : @user.body_weights.min(:date).strftime('%Y-%m-%d')
+    tr
+      th last date
+      td = @user.body_weights.empty? ? nil : @user.body_weights.max(:date).strftime('%Y-%m-%d')

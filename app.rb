@@ -1,9 +1,12 @@
 require 'sinatra'
 require 'sinatra/namespace'
 require 'sinatra/config_file'
-require 'slim'
 require 'omniauth-google-oauth2'
+require 'slim'
 require 'chartkick'
+require 'will_paginate_mongoid'
+require 'will_paginate/view_helpers/sinatra'
+require 'will_paginate-bootstrap'
 require './models/load'
 if development?
   require 'sinatra/reloader'
@@ -31,6 +34,7 @@ end
 # ######################################################################
 # helpers
 # ######################################################################
+helpers WillPaginate::Sinatra
 helpers do
   def user_login?
     session[:provider] && session[:uid]
@@ -55,6 +59,11 @@ helpers do
   def recent_weight
     bw = @user.body_weights
     @bw ||= bw.empty? ? nil : bw.desc(:date, :time).first.weight
+  end
+
+  def body_weights_paginate
+    @user.body_weights.desc(:date, :time)
+      .paginate(per_page: 5, page: params[:page])
   end
 end
 
