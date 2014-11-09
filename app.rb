@@ -45,7 +45,7 @@ helpers do
   end
 
   def form_action
-    @action ||= '/home/create'
+    @action ||= '/home/body_weights'
   end
 
   def current_date
@@ -62,21 +62,10 @@ helpers do
   end
 
   def body_weights_paginate
-    @user.body_weights.desc(:date, :time)
-      .paginate(per_page: 5, page: params[:page])
-  end
-end
-
-# ######################################################################
-# before filter /home
-# ######################################################################
-before '/home/?*' do
-  if user_login?
-    @user = current_user
-  else
-    # 認証後のリダイレクト先を格納しておく
-    session[:request_path] = request.path
-    redirect to('/auth/google_oauth2')
+    per_page = (request.path == '/home') ? 5 : nil
+    page     = params[:page]
+    @user.body_weights.desc(:date, :time).paginate(per_page: per_page,
+                                                   page:     page)
   end
 end
 
@@ -125,53 +114,78 @@ end
 # Authentication Area
 # ######################################################################
 namespace '/home' do
+  # before filter
+  before '/?*' do
+    if user_login?
+      @user = current_user
+    else
+      # 認証後のリダイレクト先を格納しておく
+      session[:request_path] = request.path
+      redirect to('/auth/google_oauth2')
+    end
+  end
+
   get '/?' do
     slim :home
   end
 
-  post '/create' do
-    if @user.body_weights.create(params)
-      redirect to('/home')
-    else
-      # TODO: 登録失敗時の対応をどうにかする
+  namespace '/body_weights' do
+    # body_weights#index
+    get '/?' do
+      slim :_data_list
+    end
+
+    # body_weights#new
+    get '/new' do
+      slim :_form
+    end
+
+    # body_weights#create
+    post '/?' do
+      if @user.body_weights.create(params)
+      else
+        # TODO: 登録失敗時の対応をどうにかする
+      end
       redirect to('/home')
     end
-  end
 
-  get '/edit/:id' do |id|
-    bw = @user.body_weights.find(id)
-    @date   = bw.date.strftime('%Y-%m-%d')
-    @time   = bw.time.strftime('%H:%M')
-    @bw     = bw.weight
-    @action = "/home/edit/#{id}"
-    slim :edit
-  end
-
-  post '/edit/:id' do |id|
-    @doc = @user.body_weights.find(id)
-    redirect to('/home') if @doc.nil?
-    if @doc.update(date:   params['date'],
-                   time:   params['time'],
-                   weight: params['weight'])
-      redirect to('/home')
-    else
-      # TODO: 更新失敗時の対応をなんとかする
-      redirect to("/edit/#{id}")
+    # body_weights#show
+    get '/:id' do |id|
+      @doc = @user.body_weights.find(id)
+      redirect to('/home') if @doc.nil?
+      slim :show
     end
-  end
+    # body_weights#edit
+    get '/:id/edit' do |id|
+      bw = @user.body_weights.find(id)
+      @date   = bw.date.strftime('%Y-%m-%d')
+      @time   = bw.time.strftime('%H:%M')
+      @bw     = bw.weight
+      @action = "/home/body_weights/#{id}"
+      slim :edit
+    end
 
-  get '/delete/:id' do |id|
-    @doc = @user.body_weights.find(id)
-    redirect to('/home') if @doc.nil?
-    slim :delete
-  end
+    # body_weights#update
+    post '/:id' do |id|
+      @doc = @user.body_weights.find(id)
+      redirect to("/home/body_weights/#{id}") if @doc.nil?
+      if @doc.update(date:   params['date'],
+                     time:   params['time'],
+                     weight: params['weight'])
+        redirect to('/home')
+      else
+        # TODO: 更新失敗時の対応をなんとかする
+      end
+    end
 
-  post '/delete/:id' do |id|
-    doc = @user.body_weights.find(id)
-    doc.destroy unless doc.nil?
-    redirect to('/home')
-  end
-end
+    # body_weights#delete
+    post '/:id/delete' do |id|
+      doc = @user.body_weights.find(id)
+      doc.destroy unless doc.nil?
+      redirect to('/home')
+    end
+  end # namespace '/body_weights' do
+end # namespace '/home' do
 
 # ######################################################################
 # for NewRelic ping

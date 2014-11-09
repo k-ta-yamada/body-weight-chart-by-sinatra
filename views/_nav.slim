@@ -1,4 +1,5 @@
-nav.navbar.navbar-default.navbar-fixed-bottom
+/ nav.navbar.navbar-default.navbar-fixed-bottom
+nav.navbar.navbar-default.navbar-fixed-top
   .container-fluid
 
     .navbar-header
@@ -10,13 +11,13 @@ nav.navbar.navbar-default.navbar-fixed-bottom
       a.navbar-brand href="/" my-body-weight
 
     #nav-menu-1.collapse.navbar-collapse
-      - if request.path == '/home'
-        ul.nav.navbar-nav
-          / li: a href="#input-form" input
-          li: a href="#chart" chart
-          / li: a href="#summary" summary
-          li: a href="#data-list" list
-          li: a href="/logout" logout
+      ul.nav.navbar-nav
+        / li: a href="/home" home
+        li: a href="/home/body_weights/new" input
+        / li: a href="#chart" chart
+        / li: a href="#summary" summary
+        li: a href="/home/body_weights" data list
+        li: a href="/logout" logout
 
       p.navbar-text.navbar-right
         | welcom,&nbsp;

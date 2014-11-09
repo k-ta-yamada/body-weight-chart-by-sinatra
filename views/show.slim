@@ -1,0 +1,19 @@
+.container
+  h3 this doc is #{@doc.id}
+
+  table.table.table-hover
+    thead
+    tbody
+      tr
+        th date
+        td = @doc.date
+      tr
+        th time
+        td = @doc.time.strftime('%H:%M')
+      tr
+        th weight
+        td = @doc.weight
+
+  p Did you make sure that you want to delete the document?
+  form method="post" action="/home/body_weights/#{@doc.id}/delete"
+    button.btn.btn-danger type='submit' delete

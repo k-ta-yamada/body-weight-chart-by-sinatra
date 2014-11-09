@@ -1,38 +1,44 @@
-form.form-horizontal method="post" action=form_action
-  fieldset
-    / legend date time
-    .form-group
-      .col-sm-2
-        / label date
-      .col-sm-10
-        input.form-control.input-lg [type="date"
-                                     name="date"
-                                     value=current_date
-                                     required=""]
-    .form-group
-      .col-sm-2
-        / label time
-      .col-sm-10
-        input.form-control.input-lg [type="time"
-                                     name="time"
-                                     value=current_time
-                                     required=""]
-  fieldset
-    legend weight
-    .form-group
-      .col-sm-2
-        / label weight
-      .col-sm-10
-        input.form-control.input-lg [type="number"
-                                     id="weight"
-                                     name="weight"
-                                     value=recent_weight
-                                     step="0.05"
-                                     min="0"
-                                     required=""]
-        span.help-block default is last doc's weight
-  fieldset
-    legend
-    .form-group
-      .col-sm-offset-2.col-sm-10
-        button.btn.btn-warning.btn-block.btn-lg type="submit" submit
+    .panel.panel-default
+      .panel-heading
+        .panel-title input
+      .panel-body
+        form.form-horizontal method="post" action=form_action
+          fieldset
+            legend date
+            .form-group
+              .col-sm-2
+                / label date
+              .col-sm-10
+                input.form-control.input-lg [type="date"
+                                             name="date"
+                                             value=current_date
+                                             required=""]
+          fieldset
+            legend time
+            .form-group
+              .col-sm-2
+                / label time
+              .col-sm-10
+                input.form-control.input-lg [type="time"
+                                             name="time"
+                                             value=current_time
+                                             required=""]
+          fieldset
+            legend weight
+            .form-group
+              .col-sm-2
+                / label weight
+              .col-sm-10
+                input.form-control.input-lg [type="number"
+                                             id="weight"
+                                             name="weight"
+                                             value=recent_weight
+                                             step="0.05"
+                                             min="0"
+                                             required=""]
+                span.help-block default is last doc's weight
+          fieldset
+            legend
+            .form-group
+              .col-sm-offset-2.col-sm-10
+                button.btn.btn-warning.btn-block.btn-lg type="submit" submit

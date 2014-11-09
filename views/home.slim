@@ -1,18 +1,10 @@
 .row
-  .col-md-4
-    h3#input-form input form
-    hr
-    == slim :_form
-  .col-md-8
-    h3#chart chart
-    hr
+  .col-md-12
     == slim :_chart
 
 .row
   .col-md-4
-    h3#summary summary
-    == slim :_data_summary
+    == slim :_form
 
   .col-md-8
-    h3#data-list data list
     == slim :_data_list
