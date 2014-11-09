@@ -17,3 +17,4 @@
   p Did you make sure that you want to delete the document?
   form method="post" action="/home/body_weights/#{@doc.id}/delete"
     button.btn.btn-danger type='submit' delete
+    input type="hidden" name="_method" value="DELETE"

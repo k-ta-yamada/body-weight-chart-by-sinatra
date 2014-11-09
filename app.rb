@@ -19,6 +19,9 @@ end
 # ######################################################################
 config_file './config/config.yml.erb'
 configure do
+  # use Rack::MethodOverride
+  # set :method_override, true
+  enable :method_override
   # enable :sessions
   use Rack::Session::Pool, session_secret: settings.rack_session_secret
   use OmniAuth::Builder do
@@ -142,7 +145,9 @@ namespace '/home' do
 
     # body_weights#create
     post '/?' do
-      if @user.body_weights.create(params)
+      if @user.body_weights.create(date:   params[:date],
+                                   time:   params[:time],
+                                   weight: params[:weight])
       else
         # TODO: 登録失敗時の対応をどうにかする
       end
@@ -155,6 +160,7 @@ namespace '/home' do
       redirect to('/home') if @doc.nil?
       slim :show
     end
+
     # body_weights#edit
     get '/:id/edit' do |id|
       bw = @user.body_weights.find(id)
@@ -162,24 +168,25 @@ namespace '/home' do
       @time   = bw.time.strftime('%H:%M')
       @bw     = bw.weight
       @action = "/home/body_weights/#{id}"
+      @method = 'PUT'
       slim :edit
     end
 
     # body_weights#update
-    post '/:id' do |id|
+    put '/:id' do |id|
       @doc = @user.body_weights.find(id)
       redirect to("/home/body_weights/#{id}") if @doc.nil?
-      if @doc.update(date:   params['date'],
-                     time:   params['time'],
-                     weight: params['weight'])
+      if @doc.update(date:   params[:date],
+                     time:   params[:time],
+                     weight: params[:weight])
         redirect to('/home')
       else
         # TODO: 更新失敗時の対応をなんとかする
       end
     end
 
-    # body_weights#delete
-    post '/:id/delete' do |id|
+    # body_weights#destroy
+    delete '/:id/delete' do |id|
       doc = @user.body_weights.find(id)
       doc.destroy unless doc.nil?
       redirect to('/home')
