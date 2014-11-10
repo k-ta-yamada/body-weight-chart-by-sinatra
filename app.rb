@@ -78,7 +78,7 @@ end
 before do
   puts request.cookies
   if !request.ssl? && Sinatra::Base.environment == :production
-    redirect to("https://#{request.host}#{request.path}:#{request.port}")
+    redirect to("https://#{request.host}#{request.path}")
   end
 end
 
