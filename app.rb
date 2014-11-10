@@ -73,6 +73,16 @@ helpers do
 end
 
 # ######################################################################
+# filters
+# ######################################################################
+before do
+  puts request.cookies
+  if !request.ssl? && Sinatra::Base.environment == :production
+    redirect to("https://#{request.host}#{request.path}:#{request.port}")
+  end
+end
+
+# ######################################################################
 # no auth area
 # ######################################################################
 namespace '/' do
@@ -117,7 +127,6 @@ end
 # Authentication Area
 # ######################################################################
 namespace '/home' do
-  # before filter
   before '/?*' do
     if user_login?
       @user = current_user
