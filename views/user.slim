@@ -1,0 +1,35 @@
+.container
+  h3 user info
+
+  form method="POST" action="/home/user"
+    table.table.table-hover
+      thead
+      tbody
+        tr
+          th provider
+          td = @user.provider
+        tr
+          th uid
+          td = @user.uid
+        tr
+          th first_name
+          td = @user.first_name
+        tr
+          th last_name
+          td = @user.last_name
+        tr
+          th email
+          td = @user.email
+        tr
+          th threshold
+          td
+            input.form-control.input-lg [type="number"
+                                         id="threshold"
+                                         name="threshold"
+                                         value="#{@user.threshold}"
+                                         step="0.05"]
+        tr
+          th
+          td
+            button.btn.btn-warning.btn-block.btn-lg type="submit" submit
+            input type="hidden" name="_method" value="PUT"

@@ -12,13 +12,10 @@ nav.navbar.navbar-default.navbar-fixed-top
 
     #nav-menu-1.collapse.navbar-collapse
       ul.nav.navbar-nav
-        / li: a href="/home" home
         li: a href="/home/body_weights/new" input
-        / li: a href="#chart" chart
-        / li: a href="#summary" summary
         li: a href="/home/body_weights" data list
         li: a href="/logout" logout
 
       p.navbar-text.navbar-right
         | welcom,&nbsp;
-        a.navbar-link href="#" #{@user.first_name} #{@user.last_name}
+        a.navbar-link href="/home/user" #{@user.first_name} #{@user.last_name}

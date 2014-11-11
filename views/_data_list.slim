@@ -16,7 +16,7 @@
             th
         tbody
         - body_weights_paginate.each.with_index(1) do |doc, i|
-          tr.text-nowrap class = (doc.weight > 72.5 ? 'danger' : nil)
+          tr.text-nowrap class = (doc.weight > current_user.threshold ? 'danger' : nil)
             td = doc.date
             td = doc.time.strftime('%H:%M')
             td = "#{sprintf('%03.2f', doc.weight)} kg"

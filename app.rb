@@ -19,10 +19,7 @@ end
 # ######################################################################
 config_file './config/config.yml.erb'
 configure do
-  # use Rack::MethodOverride
-  # set :method_override, true
   enable :method_override
-  # enable :sessions
   use Rack::Session::Pool, session_secret: settings.rack_session_secret
   use OmniAuth::Builder do
     provider :google_oauth2,
@@ -44,7 +41,7 @@ helpers do
   end
 
   def current_user
-    User.find_by(provider: session[:provider], uid: session[:uid])
+    @user ||= User.find_by(provider: session[:provider], uid: session[:uid])
   end
 
   def form_action
@@ -139,6 +136,22 @@ namespace '/home' do
 
   get '/?' do
     slim :home
+  end
+
+  namespace '/user' do
+    get '/?' do
+      @user = current_user
+      slim :user
+    end
+
+    put '/?' do
+      @user = current_user
+      if @user.update(threshold: params[:threshold])
+        redirect to('/home/user')
+      else
+        # TODO: 更新失敗時の対応をなんとかする
+      end
+    end
   end
 
   namespace '/body_weights' do
